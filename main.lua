@@ -1,4 +1,6 @@
 function love.load ()
+	enemyX, enemyY = 300, 600
+	evX, evY = 0, -1
 	playerX, playerY = 100, 100
 	velX, velY = 0, 1 
 	VEL = 100
@@ -27,7 +29,7 @@ function love.update (dt)
 		local alpha = ANG * dt
 		local vx = velX * math.cos(alpha) - velY * math.sin(alpha)
 		local vy = velX * math.sin(alpha) + velY * math.cos(alpha)
-		DOT = DOT + dt * ANG*2
+		DOT = DOT + dt * ANG*20
 		velX = vx
 		velY = vy
 		-- rotaciona (vx, vy) no sentido anti-horario
@@ -35,7 +37,7 @@ function love.update (dt)
 		local alpha = ANG * dt
 		local vx = velX * math.cos(-alpha) - velY * math.sin(-alpha)
 		local vy = velX * math.sin(-alpha) + velY * math.cos(-alpha)
-		DOT = DOT + dt * ANG*2
+		DOT = DOT + dt * ANG*20
 		velX = vx
 		velY = vy
 		-- rotaciona (vx, vy) no sentido horario
@@ -54,13 +56,20 @@ function love.update (dt)
 		table.insert( dots.x, playerX )
 		table.insert( dots.y, playerY )
 	end
+	
+	
 end
 
 function love.draw ()
+	love.graphics.setLineWidth( 14 )
 	love.graphics.setColor( 10, 10, 10 )
 	for i = 1, #dots.x do
+		if ( i > 1 ) then
+			love.graphics.line( dots.x[i-1], dots.y[i-1], dots.x[i], dots.y[i] )
+		end
 		love.graphics.circle( "fill", dots.x[i], dots.y[i], 7, 100 )
 	end
+	love.graphics.line( dots.x[#dots.x], dots.y[#dots.x], playerX, playerY )
 	
 	
 	love.graphics.setColor( 255, 255, 255 )
