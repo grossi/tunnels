@@ -46,10 +46,35 @@ function love.update (dt)
 		bulletTime = 0.2
 		bulletA = playerX
 		bulletB = playerY
-		bulletC = playerX + velX * 200
-		bulletD = playerY + velY * 200
+		bulletC = playerX + velX * 150
+		bulletD = playerY + velY * 150
 		--atira
 	end
+	
+	-- Parte da AI do inimigo --
+	enemyX = enemyX + dt * evX * VEL
+	enemyY = enemyY + dt * evY * VEL
+	
+	local ENX1 = enemyX + (evX * math.cos(1/2) - evY * math.sin(1/2))
+	local ENY1 = enemyY + (evX * math.sin(1/2) + evY * math.cos(1/2))
+	local ENX2 = enemyX + (evX * math.cos(-1/2) - evY * math.sin(-1/2))
+	local ENY2 = enemyY + (evX * math.sin(-1/2) + evY * math.cos(-1/2))
+	if( ((ENX1 - playerX) * (ENX1 - playerX)) + ((ENY1 - playerY) * (ENY1 - playerY)) >
+	    ((ENX2 - playerX) * (ENX2 - playerX)) + ((ENY2 - playerY) * (ENY2 - playerY)) ) then
+		local alpha = ANG * dt
+		local vx = evX * math.cos(-alpha) - evY * math.sin(-alpha)
+		local vy = evX * math.sin(-alpha) + evY * math.cos(-alpha)
+		evX = vx
+		evY = vy
+	else
+		local alpha = ANG * dt
+		local vx = evX * math.cos(alpha) - evY * math.sin(alpha)
+		local vy = evX * math.sin(alpha) + evY * math.cos(alpha)
+		evX = vx
+		evY = vy
+	end
+	
+	----
 	
 	if ( DOT > 1 ) then
 		DOT = 0
@@ -72,9 +97,13 @@ function love.draw ()
 	love.graphics.line( dots.x[#dots.x], dots.y[#dots.x], playerX, playerY )
 	
 	
+	-- Desenha o player
 	love.graphics.setColor( 255, 255, 255 )
 	love.graphics.circle( "fill", playerX, playerY, 5, 10 )
 	
+	-- Desenha o inimigo
+	love.graphics.setColor( 255, 10, 10 )
+	love.graphics.circle( "fill", enemyX, enemyY, 5, 10 )
 	
 	if ( bulletTime > 0 ) then
 		love.graphics.setColor( 200, 0, 0 )
