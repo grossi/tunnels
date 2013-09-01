@@ -55,6 +55,7 @@ function love.update (dt)
 	enemyX = enemyX + dt * evX * VEL
 	enemyY = enemyY + dt * evY * VEL
 	
+	-- Decide se vai para a esquerda ou direita, sempre em direção ao player
 	local ENX1 = enemyX + (evX * math.cos(1/2) - evY * math.sin(1/2))
 	local ENY1 = enemyY + (evX * math.sin(1/2) + evY * math.cos(1/2))
 	local ENX2 = enemyX + (evX * math.cos(-1/2) - evY * math.sin(-1/2))
@@ -74,7 +75,7 @@ function love.update (dt)
 		evY = vy
 	end
 	
-	----
+	------------------------
 	
 	if ( DOT > 1 ) then
 		DOT = 0
@@ -100,10 +101,14 @@ function love.draw ()
 	-- Desenha o player
 	love.graphics.setColor( 255, 255, 255 )
 	love.graphics.circle( "fill", playerX, playerY, 5, 10 )
+	love.graphics.setColor( 10, 255, 100 )
+	love.graphics.circle( "fill", playerX + (velX*2), playerY + (velY*2), 2, 10 )
 	
 	-- Desenha o inimigo
 	love.graphics.setColor( 255, 10, 10 )
 	love.graphics.circle( "fill", enemyX, enemyY, 5, 10 )
+	love.graphics.setColor( 255, 255, 255 )
+	love.graphics.circle( "fill", enemyX + (evX*2), enemyY + (evY*2), 2, 10 )
 	
 	if ( bulletTime > 0 ) then
 		love.graphics.setColor( 200, 0, 0 )
